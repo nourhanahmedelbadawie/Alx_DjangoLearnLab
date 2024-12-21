@@ -44,3 +44,4 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # Enable the browser's XSS filter to help prevent cross-site scripting (XSS) attacks
 SECURE_BROWSER_XSS_FILTER = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
