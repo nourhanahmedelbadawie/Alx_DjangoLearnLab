@@ -6,6 +6,8 @@ from .models import Book
 from django.shortcuts import render
 from .models import Book
 
+from django.shortcuts import render
+from .forms import ExampleForm
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
@@ -42,3 +44,17 @@ def search_books(request):
     user_input = request.GET.get('search', '')
     books = Book.objects.filter(title__icontains=user_input)  # Safe ORM query
     return render(request, 'bookshelf/search_results.html', {'books': books})
+
+
+
+def create_book(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Process form data, e.g., save to database
+            form.save()
+            return redirect('book_list')  # Redirect to a list of books after successful submission
+    else:
+        form = ExampleForm()
+
+    return render(request, 'bookshelf/create_book.html', {'form': form})
