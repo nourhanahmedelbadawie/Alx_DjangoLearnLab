@@ -15,8 +15,17 @@ except Book.DoesNotExist:
 
 ### Delete Operation
 
+### Delete Operation
+
+
 **Command:**
 ```python
+from bookshelf.models import Book  # Required Import
+
+# Retrieve the book to be deleted
+retrieved_book = Book.objects.get(title="Nineteen Eighty-Four")
+
+# Delete the book instance
 retrieved_book.delete()
 
 # Attempt to retrieve the deleted book
