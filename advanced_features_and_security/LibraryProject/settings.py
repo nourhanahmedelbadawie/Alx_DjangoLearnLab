@@ -1,5 +1,7 @@
 INSTALLED_APPS = [
     'relationship_app',
+        'csp',
+
 ]
 TEMPLATES = [
     {
@@ -15,4 +17,7 @@ TEMPLATES = [
             ],
         },
     },
+]
+MIDDLEWARE = [
+    'csp.middleware.CSPMiddleware',
 ]
