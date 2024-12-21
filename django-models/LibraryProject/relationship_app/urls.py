@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import  list_books , LibraryDetailView# This is the missing import
 from django.contrib.auth import views as views
-from .views import admin_view, librarian_view, member_view
+from .views import admin_view, librarian_view, member_view , edit_book , delete_book
 from . import views
 
 urlpatterns = [
@@ -13,8 +13,8 @@ urlpatterns = [
     path('librarian-view/', librarian_view, name='librarian_view'),
     path('member-view/', member_view, name='member_view'),
     path('books/add/', views.add_book, name='add_book'),
-    path('books/<int:book_id>/edit/', views.edit_book, name='edit_book'),
-    path('books/<int:book_id>/delete/', views.delete_book, name='delete_book'),
+    path('books/<int:book_id>/edit/', edit_book, name='edit_book'),
+    path('books/<int:book_id>/delete/', delete_book, name='delete_book'),
     path('books/', list_books, name='list_books'),
 
 ]
