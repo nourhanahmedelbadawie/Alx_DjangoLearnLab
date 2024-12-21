@@ -3,6 +3,11 @@ from django.views.generic.detail import DetailView
 from .models import Library, Book  # Import models if they exist
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import user_passes_test
+# views.py
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Book
+from .forms import BookForm  # Assuming you have a BookForm
+from django.contrib.auth.decorators import permission_required
 
 
 # Function-based view for listing all books
@@ -51,3 +56,37 @@ def librarian_view(request):
 @user_passes_test(check_role('Member'))
 def member_view(request):
     return render(request, 'relationship_app/member_view.html', {'role': 'Member'})
+
+
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')  # Replace with your book list view name
+    else:
+        form = BookForm()
+    return render(request, 'relationship_app/add_book.html', {'form': form})
+
+
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def edit_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')  # Replace with your book list view name
+    else:
+        form = BookForm(instance=book)
+    return render(request, 'relationship_app/edit_book.html', {'form': form})
+
+
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        book.delete()
+        return redirect('book_list')  # Replace with your book list view name
+    return render(request, 'relationship_app/delete_book.html', {'book': book})
