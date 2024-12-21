@@ -51,5 +51,8 @@ def librarian_view(request):
 @user_passes_test(check_role('Member'))
 def member_view(request):
     return render(request, 'relationship_app/member_view.html', {'role': 'Member'})
+@user_passes_test(check_role('Admin'), login_url='/custom-error/')
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html', {'role': 'Admin'})
 
 
